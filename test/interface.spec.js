@@ -3,12 +3,21 @@
 
 const tests = require('interface-ipfs-core')
 const isNode = require('detect-node')
+const IPFSFactory = require('ipfsd-ctl')
 const CommonFactory = require('./utils/interface-common-factory')
 const IPFSApi = require('../src')
+const IPFSPool = require('./utils/ipfs-pool')
 const isWindows = process.platform && process.platform === 'win32'
 
-describe('interface-ipfs-core tests', () => {
-  const defaultCommonFactory = CommonFactory.create()
+describe.only('interface-ipfs-core tests', () => {
+  const defaultIpfsFactory = IPFSFactory.create()
+
+  const pool = new IPFSPool((cb) => {
+    defaultIpfsFactory.spawn({ initOptions: { bits: 1024 } }, cb)
+  })
+  pool.start()
+
+  const defaultCommonFactory = CommonFactory.create({ pool })
 
   tests.bitswap(defaultCommonFactory, {
     skip: [

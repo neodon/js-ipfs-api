@@ -19,15 +19,24 @@ function createFactory (options) {
 
     if (options.createSetup) {
       setup = options.createSetup({ ipfsFactory, nodes }, options)
+    } else if (options.pool) {
+      setup = (callback) => {
+        callback(null, {
+          spawnNode (cb) {
+            options.pool.acquire((err, _ipfsd) => {
+              if (err) return cb(err)
+              nodes.push(_ipfsd)
+              cb(null, IPFSApi(_ipfsd.apiAddr))
+            })
+          }
+        })
+      }
     } else {
       setup = (callback) => {
         callback(null, {
           spawnNode (cb) {
             ipfsFactory.spawn(options.spawnOptions, (err, _ipfsd) => {
-              if (err) {
-                return cb(err)
-              }
-
+              if (err) return cb(err)
               nodes.push(_ipfsd)
               cb(null, IPFSApi(_ipfsd.apiAddr))
             })
