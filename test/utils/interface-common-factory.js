@@ -9,10 +9,7 @@ function createFactory (options) {
   options = options || {}
 
   options.factoryOptions = options.factoryOptions || {}
-  options.spawnOptions = options.spawnOptions || {
-    args: ['--enable-pubsub-experiment'],
-    initOptions: { bits: 1024 }
-  }
+  options.spawnOptions = options.spawnOptions || { initOptions: { bits: 1024 } }
 
   const ipfsFactory = IPFSFactory.create(options.factoryOptions)
 
