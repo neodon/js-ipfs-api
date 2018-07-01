@@ -10,6 +10,27 @@ const isWindows = process.platform && process.platform === 'win32'
 describe('interface-ipfs-core tests', () => {
   const defaultCommonFactory = CommonFactory.create()
 
+  tests.pubsub(CommonFactory.create({
+    spawnOptions: {
+      args: ['--enable-pubsub-experiment'],
+      initOptions: { bits: 1024 }
+    }
+  }), {
+    skip: isNode ? [
+      // pubsub.subscribe
+      isWindows ? {
+        name: 'should send/receive 100 messages',
+        reason: 'FIXME https://github.com/ipfs/interface-ipfs-core/pull/188#issuecomment-354673246 and https://github.com/ipfs/go-ipfs/issues/4778'
+      } : null,
+      isWindows ? {
+        name: 'should receive multiple messages',
+        reason: 'FIXME https://github.com/ipfs/interface-ipfs-core/pull/188#issuecomment-354673246 and https://github.com/ipfs/go-ipfs/issues/4778'
+      } : null
+    ] : {
+      reason: 'FIXME pubsub is not supported in the browser https://github.com/ipfs/js-ipfs-api/issues/518'
+    }
+  })
+
   tests.bitswap(defaultCommonFactory, {
     skip: [
       // bitswap.stat
@@ -183,28 +204,6 @@ describe('interface-ipfs-core tests', () => {
   tests.pin(defaultCommonFactory)
 
   tests.ping(defaultCommonFactory)
-
-  tests.pubsub(CommonFactory.create({
-    spawnOptions: {
-      args: ['--enable-pubsub-experiment'],
-      initOptions: { bits: 1024 }
-    }
-  }), {
-    skip: isNode ? [
-      // pubsub.subscribe
-      isWindows ? {
-        name: 'should send/receive 100 messages',
-        reason: 'FIXME https://github.com/ipfs/interface-ipfs-core/pull/188#issuecomment-354673246 and https://github.com/ipfs/go-ipfs/issues/4778'
-      } : null,
-      isWindows ? {
-        name: 'should receive multiple messages',
-        reason: 'FIXME https://github.com/ipfs/interface-ipfs-core/pull/188#issuecomment-354673246 and https://github.com/ipfs/go-ipfs/issues/4778'
-      } : null
-    ] : {
-      reason: 'FIXME pubsub is not supported in the browser https://github.com/ipfs/js-ipfs-api/issues/518'
-    },
-    only: isNode ? ['peers'] : null
-  })
 
   tests.repo(defaultCommonFactory)
 
