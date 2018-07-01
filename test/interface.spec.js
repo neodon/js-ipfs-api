@@ -202,7 +202,8 @@ describe('interface-ipfs-core tests', () => {
       } : null
     ] : {
       reason: 'FIXME pubsub is not supported in the browser https://github.com/ipfs/js-ipfs-api/issues/518'
-    }
+    },
+    only: isNode ? ['peers'] : null
   })
 
   tests.repo(defaultCommonFactory)
