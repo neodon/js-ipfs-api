@@ -191,9 +191,6 @@ describe('interface-ipfs-core tests', () => {
     }
   }), {
     skip: isNode ? [
-      'publish',
-      'subscribe',
-      'unsubscribe',
       // pubsub.subscribe
       isWindows ? {
         name: 'should send/receive 100 messages',
@@ -205,7 +202,8 @@ describe('interface-ipfs-core tests', () => {
       } : null
     ] : {
       reason: 'FIXME pubsub is not supported in the browser https://github.com/ipfs/js-ipfs-api/issues/518'
-    }
+    },
+    only: isNode ? ['peers'] : null
   })
 
   tests.repo(defaultCommonFactory)
