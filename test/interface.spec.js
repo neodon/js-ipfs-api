@@ -191,7 +191,6 @@ describe('interface-ipfs-core tests', () => {
     }
   }), {
     skip: isNode ? [
-      'publish',
       'subscribe',
       // pubsub.subscribe
       isWindows ? {
