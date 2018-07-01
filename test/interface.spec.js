@@ -191,6 +191,7 @@ describe('interface-ipfs-core tests', () => {
     }
   }), {
     skip: isNode ? [
+      'publish',
       // pubsub.subscribe
       isWindows ? {
         name: 'should send/receive 100 messages',
